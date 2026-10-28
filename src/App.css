@@ -1,0 +1,420 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #18181b;
+  color: #f4f4f5;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+.app {
+  min-height: 100vh;
+  background-color: #18181b;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #27272a;
+  border-bottom: 1px solid #3f3f46;
+  padding: 16px 0;
+  position: sticky;
+  top: 0;
+}
+
+.navbar-container {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-titulo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #f4f4f5;
+  cursor: pointer;
+}
+
+.navbar-botoes {
+  display: flex;
+  gap: 10px;
+}
+
+.nav-btn {
+  background-color: transparent;
+  color: #a1a1aa;
+  border: 1px solid transparent;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.nav-btn:hover {
+  color: #f4f4f5;
+  background-color: #3f3f46;
+}
+
+.nav-btn.ativo {
+  background-color: #3f3f46;
+  color: #ffffff;
+  border: 1px solid #52525b;
+}
+
+/* Conteúdo Principal */
+.conteudo-principal {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 32px 20px;
+}
+
+.pagina {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.cabecalho-pagina h1 {
+  font-size: 26px;
+  color: #f4f4f5;
+  margin-bottom: 6px;
+}
+
+.cabecalho-pagina p {
+  color: #a1a1aa;
+  font-size: 15px;
+}
+
+/* Badges */
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.badge-azul {
+  background-color: #3f3f46;
+  color: #93c5fd;
+  border: 1px solid #52525b;
+}
+
+.badge-amarelo {
+  background-color: #3f3f46;
+  color: #fcd34d;
+  border: 1px solid #52525b;
+}
+
+.badge-verde {
+  background-color: #3f3f46;
+  color: #6ee7b7;
+  border: 1px solid #52525b;
+}
+
+/* 4 Cards do Topo */
+.cards-topo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.cards-detalhes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card-resumo {
+  background-color: #27272a;
+  border: 1px solid #3f3f46;
+  border-radius: 8px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.card-resumo span {
+  color: #a1a1aa;
+  font-size: 14px;
+}
+
+.card-resumo strong {
+  font-size: 28px;
+  color: #f4f4f5;
+}
+
+.card-resumo .texto-medio {
+  font-size: 16px;
+}
+
+.borda-azul {
+  border-top: 3px solid #60a5fa;
+}
+
+.borda-laranja {
+  border-top: 3px solid #fb923c;
+}
+
+.borda-verde {
+  border-top: 3px solid #34d399;
+}
+
+.borda-roxa {
+  border-top: 3px solid #c084fc;
+}
+
+/* Colunas do Dashboard */
+.colunas-dashboard {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.coluna-esquerda {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.coluna-direita {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card-painel {
+  background-color: #27272a;
+  border: 1px solid #3f3f46;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.painel-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.painel-topo h2 {
+  font-size: 18px;
+  color: #f4f4f5;
+}
+
+.botao-link {
+  background: none;
+  border: none;
+  color: #d4d4d8;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.botao-link:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+/* Listas Internas */
+.lista-simples {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-lista {
+  background-color: #1f1f22;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.item-titulo {
+  color: #f4f4f5;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.item-subtitulo {
+  color: #a1a1aa;
+  font-size: 13px;
+}
+
+.item-direita {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.porcentagem {
+  color: #a1a1aa;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+/* Equipe Alocada */
+.item-equipe {
+  background-color: #1f1f22;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+}
+
+.membro-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: #3f3f46;
+  border: 1px solid #52525b;
+  color: #f4f4f5;
+  font-weight: bold;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tag-tarefas {
+  background-color: #27272a;
+  border: 1px solid #3f3f46;
+  color: #d4d4d8;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+/* Página de Projetos */
+.grid-projetos {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.card-projeto {
+  background-color: #27272a;
+  border: 1px solid #3f3f46;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-projeto p {
+  color: #a1a1aa;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.info-projeto strong {
+  color: #f4f4f5;
+}
+
+.area-progresso p {
+  font-size: 14px;
+  color: #a1a1aa;
+  margin-bottom: 6px;
+}
+
+.barra-progresso {
+  width: 100%;
+  height: 8px;
+  background-color: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.barra-preenchida {
+  height: 100%;
+  background-color: #71717a;
+}
+
+.botao-detalhes {
+  background-color: #3f3f46;
+  color: #f4f4f5;
+  border: 1px solid #52525b;
+  padding: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.botao-detalhes:hover {
+  background-color: #52525b;
+}
+
+/* Detalhes do Projeto */
+.botao-voltar {
+  align-self: flex-start;
+  background-color: #27272a;
+  color: #d4d4d8;
+  border: 1px solid #3f3f46;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.botao-voltar:hover {
+  background-color: #3f3f46;
+}
+
+.titulo-com-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.tarefa-esquerda {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.circulo-checkbox {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #71717a;
+  display: inline-block;
+}
+
+.tag-pendente {
+  background-color: #27272a;
+  border: 1px solid #3f3f46;
+  color: #a1a1aa;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+/* Responsividade Básica */
+@media (max-width: 850px) {
+  .cards-topo,
+  .cards-detalhes,
+  .colunas-dashboard,
+  .grid-projetos {
+    grid-template-columns: 1fr;
+  }
+}
