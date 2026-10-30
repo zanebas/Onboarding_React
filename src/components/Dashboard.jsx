@@ -79,23 +79,35 @@ function Dashboard({
 
       {/* 4 Cards do Topo */}
       <div className="cards-topo">
-        <div className="card-resumo borda-azul">
-          <span>Projetos Ativos</span>
+        <div className="card-resumo">
+          <div className="card-resumo-topo">
+            <span className="status-dot dot-azul" aria-hidden="true"></span>
+            <span>Projetos Ativos</span>
+          </div>
           <strong>{projetosAtivos}</strong>
         </div>
 
-        <div className="card-resumo borda-laranja">
-          <span>Tarefas Pendentes</span>
+        <div className="card-resumo">
+          <div className="card-resumo-topo">
+            <span className="status-dot dot-laranja" aria-hidden="true"></span>
+            <span>Tarefas Pendentes</span>
+          </div>
           <strong>{tarefasPendentes}</strong>
         </div>
 
-        <div className="card-resumo borda-verde">
-          <span>Projetos Concluídos</span>
+        <div className="card-resumo">
+          <div className="card-resumo-topo">
+            <span className="status-dot dot-verde" aria-hidden="true"></span>
+            <span>Projetos Concluídos</span>
+          </div>
           <strong>{projetosConcluidos}</strong>
         </div>
 
-        <div className="card-resumo borda-roxa">
-          <span>Membros da Equipe</span>
+        <div className="card-resumo">
+          <div className="card-resumo-topo">
+            <span className="status-dot dot-roxo" aria-hidden="true"></span>
+            <span>Membros da Equipe</span>
+          </div>
           <strong>8</strong>
         </div>
       </div>
