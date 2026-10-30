@@ -1,3 +1,46 @@
+:root {
+  --cor-fundo: #18181b;
+  --cor-superficie: #27272a;
+  --cor-superficie-interna: #1f1f22;
+  --cor-elemento: #3f3f46;
+  --cor-elemento-hover: #52525b;
+  --cor-barra-progresso: #71717a;
+
+  --cor-borda: #3f3f46;
+  --cor-borda-forte: #1d1d20;
+  --cor-borda-divisoria: #2e2e33;
+  --cor-borda-sutil: rgba(255, 255, 255, 0.08);
+
+  --cor-texto-principal: #f4f4f5;
+  --cor-texto-destaque: #ffffff;
+  --cor-texto-secundario: #d4d4d8;
+  --cor-texto-suave: #a1a1aa;
+  --cor-texto-apagado: #71717a;
+
+  --cor-primaria: #3b82f6;
+  --cor-primaria-hover: #2563eb;
+  --cor-foco: #60a5fa;
+
+  --cor-dot-azul: #3b82f6;
+  --cor-dot-laranja: #f59e0b;
+  --cor-dot-verde: #10b981;
+  --cor-dot-roxo: #a855f7;
+
+  --cor-badge-azul: #93c5fd;
+  --cor-badge-amarelo: #fcd34d;
+  --cor-badge-verde: #6ee7b7;
+
+  --cor-erro-texto: #fca5a5;
+  --cor-erro-fundo: rgba(239, 68, 68, 0.12);
+  --cor-erro-borda: rgba(239, 68, 68, 0.35);
+
+  --cor-curtida-texto: #fda4af;
+  --cor-curtida-fundo: rgba(244, 63, 94, 0.15);
+  --cor-curtida-borda: rgba(244, 63, 94, 0.45);
+
+  --cor-backdrop: rgba(0, 0, 0, 0.72);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,21 +48,20 @@
 }
 
 body {
-  background-color: #18181b;
-  color: #f4f4f5;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.5;
 }
 
 .app {
   min-height: 100vh;
-  background-color: #18181b;
+  background-color: var(--cor-fundo);
 }
 
-/* Navbar */
 .navbar {
-  background-color: #27272a;
-  border-bottom: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
   padding: 16px 0;
   position: sticky;
   top: 0;
@@ -37,7 +79,7 @@ body {
 .navbar-titulo {
   font-size: 18px;
   font-weight: bold;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   cursor: pointer;
 }
 
@@ -48,7 +90,7 @@ body {
 
 .nav-btn {
   background-color: transparent;
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   border: 1px solid transparent;
   padding: 8px 16px;
   border-radius: 6px;
@@ -57,17 +99,16 @@ body {
 }
 
 .nav-btn:hover {
-  color: #f4f4f5;
-  background-color: #3f3f46;
+  color: var(--cor-texto-principal);
+  background-color: var(--cor-elemento);
 }
 
 .nav-btn.ativo {
-  background-color: #3f3f46;
-  color: #ffffff;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-destaque);
+  border: 1px solid var(--cor-borda-forte);
 }
 
-/* Conteúdo Principal */
 .conteudo-principal {
   max-width: 1150px;
   margin: 0 auto;
@@ -82,16 +123,15 @@ body {
 
 .cabecalho-pagina h1 {
   font-size: 26px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   margin-bottom: 6px;
 }
 
 .cabecalho-pagina p {
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   font-size: 15px;
 }
 
-/* Badges */
 .badge {
   padding: 4px 10px;
   border-radius: 12px;
@@ -100,24 +140,23 @@ body {
 }
 
 .badge-azul {
-  background-color: #3f3f46;
-  color: #93c5fd;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-badge-azul);
+  border: 1px solid var(--cor-borda-forte);
 }
 
 .badge-amarelo {
-  background-color: #3f3f46;
-  color: #fcd34d;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-badge-amarelo);
+  border: 1px solid var(--cor-borda-forte);
 }
 
 .badge-verde {
-  background-color: #3f3f46;
-  color: #6ee7b7;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-badge-verde);
+  border: 1px solid var(--cor-borda-forte);
 }
 
-/* 4 Cards do Topo */
 .cards-topo {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -135,8 +174,8 @@ body {
 }
 
 .card-resumo {
-  background-color: #27272a;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda-sutil);
   border-radius: 8px;
   padding: 18px;
   display: flex;
@@ -158,36 +197,35 @@ body {
 }
 
 .dot-azul {
-  background-color: #3b82f6;
+  background-color: var(--cor-dot-azul);
 }
 
 .dot-laranja {
-  background-color: #f59e0b;
+  background-color: var(--cor-dot-laranja);
 }
 
 .dot-verde {
-  background-color: #10b981;
+  background-color: var(--cor-dot-verde);
 }
 
 .dot-roxo {
-  background-color: #a855f7;
+  background-color: var(--cor-dot-roxo);
 }
 
 .card-resumo span {
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   font-size: 14px;
 }
 
 .card-resumo strong {
   font-size: 28px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .card-resumo .texto-medio {
   font-size: 16px;
 }
 
-/* Colunas do Dashboard */
 .colunas-dashboard {
   display: grid;
   grid-template-columns: 1.4fr 1fr;
@@ -208,8 +246,8 @@ body {
 }
 
 .card-painel {
-  background-color: #27272a;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
   border-radius: 8px;
   padding: 20px;
 }
@@ -223,23 +261,22 @@ body {
 
 .painel-topo h2 {
   font-size: 18px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .botao-link {
   background: none;
   border: none;
-  color: #d4d4d8;
+  color: var(--cor-texto-secundario);
   cursor: pointer;
   font-size: 14px;
 }
 
 .botao-link:hover {
   text-decoration: underline;
-  color: #ffffff;
+  color: var(--cor-texto-destaque);
 }
 
-/* Listas Internas */
 .lista-simples {
   display: flex;
   flex-direction: column;
@@ -247,8 +284,8 @@ body {
 }
 
 .item-lista {
-  background-color: #1f1f22;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie-interna);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 12px 14px;
   display: flex;
@@ -257,13 +294,13 @@ body {
 }
 
 .item-titulo {
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   font-size: 15px;
   font-weight: bold;
 }
 
 .item-subtitulo {
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   font-size: 13px;
 }
 
@@ -274,15 +311,14 @@ body {
 }
 
 .porcentagem {
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   font-size: 14px;
   font-weight: bold;
 }
 
-/* Equipe Alocada */
 .item-equipe {
-  background-color: #1f1f22;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie-interna);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 12px 14px;
   display: flex;
@@ -301,9 +337,9 @@ body {
   width: 38px;
   height: 38px;
   border-radius: 50%;
-  background-color: #3f3f46;
-  border: 1px solid #52525b;
-  color: #f4f4f5;
+  background-color: var(--cor-elemento);
+  border: 1px solid var(--cor-borda-forte);
+  color: var(--cor-texto-principal);
   font-weight: bold;
   font-size: 13px;
   display: flex;
@@ -312,15 +348,14 @@ body {
 }
 
 .tag-tarefas {
-  background-color: #27272a;
-  border: 1px solid #3f3f46;
-  color: #d4d4d8;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto-secundario);
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 6px;
 }
 
-/* Página de Projetos */
 .cabecalho-projetos {
   display: flex;
   justify-content: space-between;
@@ -330,9 +365,9 @@ body {
 }
 
 .botao-novo-projeto {
-  background-color: #3b82f6;
-  color: #ffffff;
-  border: 1px solid #2563eb;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-destaque);
+  border: 1px solid var(--cor-primaria-hover);
   padding: 10px 18px;
   min-height: 44px;
   border-radius: 6px;
@@ -343,16 +378,15 @@ body {
 }
 
 .botao-novo-projeto:hover {
-  background-color: #2563eb;
+  background-color: var(--cor-primaria-hover);
 }
 
-/* Modal / Menu de Adicionar Novo Projeto */
 dialog:modal {
   overscroll-behavior: contain;
 }
 
 dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.72);
+  background-color: var(--cor-backdrop);
   overflow: hidden;
   overscroll-behavior: contain;
 }
@@ -362,9 +396,9 @@ dialog::backdrop {
   width: min(560px, calc(100% - 32px));
   max-height: calc(100dvh - 48px);
   overflow-y: auto;
-  background-color: #27272a;
-  color: #f4f4f5;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda);
   border-radius: 10px;
   padding: 24px;
   display: flex;
@@ -376,19 +410,19 @@ dialog::backdrop {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #3f3f46;
+  border-bottom: 1px solid var(--cor-borda);
   padding-bottom: 14px;
 }
 
 .modal-cabecalho h2 {
   font-size: 20px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .botao-fechar-modal {
   background: transparent;
-  border: 1px solid #3f3f46;
-  color: #a1a1aa;
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto-suave);
   width: 34px;
   height: 34px;
   border-radius: 6px;
@@ -397,8 +431,8 @@ dialog::backdrop {
 }
 
 .botao-fechar-modal:hover {
-  background-color: #3f3f46;
-  color: #f4f4f5;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
 }
 
 .form-novo-projeto {
@@ -423,19 +457,19 @@ dialog::backdrop {
 .label-funcionalidade {
   font-size: 13px;
   font-weight: bold;
-  color: #d4d4d8;
+  color: var(--cor-texto-secundario);
 }
 
 .campo-form input,
 .campo-form textarea,
 .input-com-remover input,
 .form-adicionar-tarefa input {
-  background-color: #18181b;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 10px 12px;
   min-height: 44px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   font-size: 1rem;
   font-family: inherit;
 }
@@ -444,16 +478,16 @@ dialog::backdrop {
 .campo-form textarea:focus-visible,
 .input-com-remover input:focus-visible,
 .form-adicionar-tarefa input:focus-visible {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid var(--cor-foco);
   outline-offset: 1px;
-  border-color: #60a5fa;
+  border-color: var(--cor-foco);
 }
 
 .fieldset-funcionalidades {
-  border: 1px solid #3f3f46;
+  border: 1px solid var(--cor-borda);
   border-radius: 8px;
   padding: 14px;
-  background-color: #1f1f22;
+  background-color: var(--cor-superficie-interna);
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -470,13 +504,13 @@ dialog::backdrop {
 .topo-funcionalidades legend {
   font-size: 14px;
   font-weight: bold;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .botao-add-funcionalidade {
-  background-color: #3f3f46;
-  color: #f4f4f5;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda-forte);
   padding: 6px 12px;
   border-radius: 6px;
   font-size: 12px;
@@ -485,7 +519,7 @@ dialog::backdrop {
 }
 
 .botao-add-funcionalidade:hover:not(:disabled) {
-  background-color: #52525b;
+  background-color: var(--cor-elemento-hover);
 }
 
 .botao-add-funcionalidade:disabled {
@@ -515,9 +549,9 @@ dialog::backdrop {
 }
 
 .botao-remover-funcionalidade {
-  background-color: #27272a;
-  color: #fca5a5;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  color: var(--cor-erro-texto);
+  border: 1px solid var(--cor-borda);
   padding: 0 12px;
   border-radius: 6px;
   font-size: 12px;
@@ -525,14 +559,14 @@ dialog::backdrop {
 }
 
 .botao-remover-funcionalidade:hover {
-  background-color: #3f3f46;
+  background-color: var(--cor-elemento);
 }
 
 .mensagem-erro-form {
-  color: #fca5a5;
+  color: var(--cor-erro-texto);
   font-size: 13px;
-  background-color: rgba(239, 68, 68, 0.12);
-  border: 1px solid rgba(239, 68, 68, 0.35);
+  background-color: var(--cor-erro-fundo);
+  border: 1px solid var(--cor-erro-borda);
   padding: 8px 12px;
   border-radius: 6px;
 }
@@ -546,8 +580,8 @@ dialog::backdrop {
 
 .botao-cancelar {
   background-color: transparent;
-  color: #d4d4d8;
-  border: 1px solid #3f3f46;
+  color: var(--cor-texto-secundario);
+  border: 1px solid var(--cor-borda);
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -555,13 +589,13 @@ dialog::backdrop {
 }
 
 .botao-cancelar:hover {
-  background-color: #3f3f46;
+  background-color: var(--cor-elemento);
 }
 
 .botao-salvar-projeto {
-  background-color: #3b82f6;
-  color: #ffffff;
-  border: 1px solid #2563eb;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-destaque);
+  border: 1px solid var(--cor-primaria-hover);
   padding: 10px 18px;
   border-radius: 6px;
   cursor: pointer;
@@ -569,7 +603,7 @@ dialog::backdrop {
 }
 
 .botao-salvar-projeto:hover {
-  background-color: #2563eb;
+  background-color: var(--cor-primaria-hover);
 }
 
 .grid-projetos {
@@ -579,8 +613,8 @@ dialog::backdrop {
 }
 
 .card-projeto {
-  background-color: #27272a;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -589,39 +623,39 @@ dialog::backdrop {
 }
 
 .info-projeto p {
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   font-size: 14px;
   margin-bottom: 4px;
 }
 
 .info-projeto strong {
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .area-progresso p {
   font-size: 14px;
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
   margin-bottom: 6px;
 }
 
 .barra-progresso {
   width: 100%;
   height: 8px;
-  background-color: #18181b;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   overflow: hidden;
 }
 
 .barra-preenchida {
   height: 100%;
-  background-color: #71717a;
+  background-color: var(--cor-barra-progresso);
 }
 
 .botao-detalhes {
-  background-color: #3f3f46;
-  color: #f4f4f5;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda-forte);
   padding: 10px;
   border-radius: 6px;
   cursor: pointer;
@@ -629,22 +663,21 @@ dialog::backdrop {
 }
 
 .botao-detalhes:hover {
-  background-color: #52525b;
+  background-color: var(--cor-elemento-hover);
 }
 
-/* Detalhes do Projeto */
 .botao-voltar {
   align-self: flex-start;
-  background-color: #27272a;
-  color: #d4d4d8;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-secundario);
+  border: 1px solid var(--cor-borda);
   padding: 8px 14px;
   border-radius: 6px;
   cursor: pointer;
 }
 
 .botao-voltar:hover {
-  background-color: #3f3f46;
+  background-color: var(--cor-elemento);
 }
 
 .titulo-com-badge {
@@ -664,14 +697,14 @@ dialog::backdrop {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  border: 2px solid #71717a;
+  border: 2px solid var(--cor-barra-progresso);
   display: inline-block;
 }
 
 .tag-pendente {
-  background-color: #27272a;
-  border: 1px solid #3f3f46;
-  color: #a1a1aa;
+  background-color: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-texto-suave);
   font-size: 12px;
   padding: 4px 10px;
   border-radius: 12px;
@@ -688,9 +721,9 @@ dialog::backdrop {
 }
 
 .botao-adicionar-tarefa {
-  background-color: #3f3f46;
-  color: #f4f4f5;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda-forte);
   padding: 10px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -700,10 +733,9 @@ dialog::backdrop {
 }
 
 .botao-adicionar-tarefa:hover {
-  background-color: #52525b;
+  background-color: var(--cor-elemento-hover);
 }
 
-/* Feed Interativo (Curtidas e Comentários) */
 .form-postar-feed {
   display: flex;
   flex-direction: column;
@@ -716,28 +748,28 @@ dialog::backdrop {
   align-items: center;
   gap: 8px;
   align-self: flex-start;
-  background-color: #1f1f22;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie-interna);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 5px 10px;
   font-size: 12px;
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
 }
 
 .aba-usuario-logado strong {
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .aba-usuario-comentario {
-  background-color: #27272a;
+  background-color: var(--cor-superficie);
 }
 
 .form-postar-feed textarea {
-  background-color: #18181b;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 10px 12px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   font-size: 1rem;
   font-family: inherit;
   resize: vertical;
@@ -745,16 +777,16 @@ dialog::backdrop {
 
 .form-postar-feed textarea:focus-visible,
 .linha-input-comentario input:focus-visible {
-  outline: 2px solid #60a5fa;
+  outline: 2px solid var(--cor-foco);
   outline-offset: 1px;
-  border-color: #60a5fa;
+  border-color: var(--cor-foco);
 }
 
 .botao-publicar-feed {
   align-self: flex-end;
-  background-color: #3b82f6;
-  color: #ffffff;
-  border: 1px solid #2563eb;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-destaque);
+  border: 1px solid var(--cor-primaria-hover);
   padding: 8px 16px;
   border-radius: 6px;
   cursor: pointer;
@@ -763,22 +795,21 @@ dialog::backdrop {
 }
 
 .botao-publicar-feed:hover {
-  background-color: #2563eb;
+  background-color: var(--cor-primaria-hover);
 }
 
 .item-feed {
-  background-color: #1f1f22;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie-interna);
+  border: 1px solid var(--cor-borda);
   border-radius: 8px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* Aba acima de cada publicação com o nome completo de quem fez */
 .aba-autor-publicacao {
-  background-color: #27272a;
-  border-bottom: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
   padding: 9px 14px;
   display: flex;
   justify-content: space-between;
@@ -796,9 +827,9 @@ dialog::backdrop {
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background-color: #3f3f46;
-  border: 1px solid #52525b;
-  color: #f4f4f5;
+  background-color: var(--cor-elemento);
+  border: 1px solid var(--cor-borda-forte);
+  color: var(--cor-texto-principal);
   font-size: 11px;
   font-weight: bold;
   display: inline-flex;
@@ -814,7 +845,7 @@ dialog::backdrop {
 }
 
 .nome-autor-completo {
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   font-size: 14px;
   font-weight: bold;
 }
@@ -828,13 +859,13 @@ dialog::backdrop {
   align-items: center;
   gap: 10px;
   padding: 8px 14px 12px;
-  border-top: 1px solid #2e2e33;
+  border-top: 1px solid var(--cor-borda-divisoria);
 }
 
 .btn-acao-feed {
-  background-color: #27272a;
-  color: #a1a1aa;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 5px 12px;
   font-size: 12px;
@@ -847,26 +878,26 @@ dialog::backdrop {
 }
 
 .btn-acao-feed:hover {
-  background-color: #3f3f46;
-  color: #f4f4f5;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
 }
 
 .btn-acao-feed.curtido {
-  background-color: rgba(244, 63, 94, 0.15);
-  color: #fda4af;
-  border-color: rgba(244, 63, 94, 0.45);
+  background-color: var(--cor-curtida-fundo);
+  color: var(--cor-curtida-texto);
+  border-color: var(--cor-curtida-borda);
 }
 
 .btn-acao-feed.ativo {
-  background-color: #3f3f46;
-  color: #f4f4f5;
-  border-color: #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
+  border-color: var(--cor-borda-forte);
 }
 
 .area-comentarios-feed {
   padding: 12px 14px 14px;
-  border-top: 1px dashed #3f3f46;
-  background-color: #18181b;
+  border-top: 1px dashed var(--cor-borda);
+  background-color: var(--cor-fundo);
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -878,10 +909,9 @@ dialog::backdrop {
   gap: 10px;
 }
 
-/* Card de comentário com aba superior de autor */
 .comentario-card-feed {
-  background-color: #1f1f22;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie-interna);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   overflow: hidden;
   display: flex;
@@ -889,8 +919,8 @@ dialog::backdrop {
 }
 
 .aba-autor-comentario {
-  background-color: #27272a;
-  border-bottom: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  border-bottom: 1px solid var(--cor-borda);
   padding: 6px 12px;
   display: flex;
   justify-content: space-between;
@@ -900,12 +930,12 @@ dialog::backdrop {
 
 .aba-autor-comentario strong {
   font-size: 13px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
 }
 
 .aba-autor-comentario span {
   font-size: 11px;
-  color: #a1a1aa;
+  color: var(--cor-texto-suave);
 }
 
 .comentario-corpo-linha {
@@ -918,13 +948,13 @@ dialog::backdrop {
 
 .comentario-corpo-linha p {
   font-size: 13px;
-  color: #d4d4d8;
+  color: var(--cor-texto-secundario);
 }
 
 .btn-curtir-comentario {
-  background-color: #27272a;
-  color: #a1a1aa;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie);
+  color: var(--cor-texto-suave);
+  border: 1px solid var(--cor-borda);
   border-radius: 12px;
   padding: 3px 8px;
   font-size: 11px;
@@ -933,19 +963,19 @@ dialog::backdrop {
 }
 
 .btn-curtir-comentario:hover {
-  background-color: #3f3f46;
-  color: #f4f4f5;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
 }
 
 .btn-curtir-comentario.curtido {
-  background-color: rgba(244, 63, 94, 0.15);
-  color: #fda4af;
-  border-color: rgba(244, 63, 94, 0.45);
+  background-color: var(--cor-curtida-fundo);
+  color: var(--cor-curtida-texto);
+  border-color: var(--cor-curtida-borda);
 }
 
 .sem-comentarios {
   font-size: 12px;
-  color: #71717a;
+  color: var(--cor-texto-apagado);
   font-style: italic;
 }
 
@@ -963,20 +993,20 @@ dialog::backdrop {
 
 .linha-input-comentario input {
   flex: 1;
-  background-color: #1f1f22;
-  border: 1px solid #3f3f46;
+  background-color: var(--cor-superficie-interna);
+  border: 1px solid var(--cor-borda);
   border-radius: 6px;
   padding: 8px 10px;
   min-height: 38px;
-  color: #f4f4f5;
+  color: var(--cor-texto-principal);
   font-size: 1rem;
   font-family: inherit;
 }
 
 .botao-enviar-comentario {
-  background-color: #3f3f46;
-  color: #f4f4f5;
-  border: 1px solid #52525b;
+  background-color: var(--cor-elemento);
+  color: var(--cor-texto-principal);
+  border: 1px solid var(--cor-borda-forte);
   padding: 8px 14px;
   border-radius: 6px;
   font-size: 13px;
@@ -985,7 +1015,7 @@ dialog::backdrop {
 }
 
 .botao-enviar-comentario:hover {
-  background-color: #52525b;
+  background-color: var(--cor-elemento-hover);
 }
 
 .sr-only {
@@ -1000,7 +1030,6 @@ dialog::backdrop {
   white-space: nowrap;
 }
 
-/* Responsividade Básica */
 @media (max-width: 850px) {
   .cards-topo,
   .cards-detalhes,
