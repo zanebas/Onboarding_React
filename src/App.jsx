@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import './App.css';
-import mockProjects from './data/mockProjects';
+import mockProjects, { formatarPreco } from './data/mockProjects';
 import Navbar from './components/Navbar';
 import Dashboard from './components/Dashboard';
 import Projetos from './components/Projetos';
 import ProjetoDetalhes from './components/ProjetoDetalhes';
 
 const USUARIO_ATUAL = 'Samuel Zanebone';
+
+function calcularProgresso(tarefas) {
+  if (!tarefas || tarefas.length === 0) return 0;
+  const concluidas = tarefas.filter((t) => t.concluida).length;
+  return Math.round((concluidas / tarefas.length) * 100);
+}
 
 const INITIAL_FEED = [
   {
@@ -69,20 +75,95 @@ function App() {
     setProjetos((atuais) => [...atuais, novoProjeto]);
   }
 
+  function atualizarPrecoProjeto(projetoId, novoPreco) {
+    const precoFormatado = formatarPreco(novoPreco);
+    setProjetos((atuais) =>
+      atuais.map((projeto) =>
+        projeto.id === projetoId
+          ? { ...projeto, preco: precoFormatado }
+          : projeto
+      )
+    );
+  }
+
+  function alternarStatusEntregaProjeto(projetoId) {
+    setProjetos((atuais) =>
+      atuais.map((projeto) => {
+        if (projeto.id !== projetoId) return projeto;
+
+        const estaEntregue = projeto.status === 'Entregue';
+        if (estaEntregue) {
+          const novasTarefas = projeto.tarefas.map((t) => ({
+            ...t,
+            concluida: false,
+          }));
+          return {
+            ...projeto,
+            status: 'Em andamento',
+            progresso: 0,
+            tarefas: novasTarefas,
+          };
+        }
+
+        const novasTarefas = projeto.tarefas.map((t) => ({
+          ...t,
+          concluida: true,
+        }));
+        return {
+          ...projeto,
+          status: 'Entregue',
+          progresso: 100,
+          tarefas: novasTarefas,
+        };
+      })
+    );
+  }
+
+  function alternarTarefaProjeto(projetoId, tarefaId) {
+    setProjetos((atuais) =>
+      atuais.map((projeto) => {
+        if (projeto.id !== projetoId) return projeto;
+
+        const novasTarefas = projeto.tarefas.map((tarefa) =>
+          tarefa.id === tarefaId
+            ? { ...tarefa, concluida: !tarefa.concluida }
+            : tarefa
+        );
+        const novoProgresso = calcularProgresso(novasTarefas);
+        const novoStatus =
+          novoProgresso === 100 ? 'Entregue' : 'Em andamento';
+
+        return {
+          ...projeto,
+          tarefas: novasTarefas,
+          progresso: novoProgresso,
+          status: novoStatus,
+        };
+      })
+    );
+  }
+
   function adicionarTarefaNoProjeto(projetoId, tituloTarefa) {
     setProjetos((atuais) =>
       atuais.map((projeto) => {
         if (projeto.id !== projetoId) return projeto;
+        const novasTarefas = [
+          ...projeto.tarefas,
+          {
+            id: Date.now(),
+            titulo: tituloTarefa,
+            concluida: false,
+          },
+        ];
+        const novoProgresso = calcularProgresso(novasTarefas);
+        const novoStatus =
+          novoProgresso === 100 ? 'Entregue' : 'Em andamento';
+
         return {
           ...projeto,
-          tarefas: [
-            ...projeto.tarefas,
-            {
-              id: Date.now(),
-              titulo: tituloTarefa,
-              concluida: false,
-            },
-          ],
+          tarefas: novasTarefas,
+          progresso: novoProgresso,
+          status: novoStatus,
         };
       })
     );
@@ -189,6 +270,8 @@ function App() {
             projetos={projetos}
             onSelecionarProjeto={(projeto) => setProjetoSelecionadoId(projeto.id)}
             onAdicionarProjeto={adicionarProjeto}
+            onAtualizarPreco={atualizarPrecoProjeto}
+            onAlternarEntrega={alternarStatusEntregaProjeto}
           />
         )}
 
@@ -197,6 +280,9 @@ function App() {
             projeto={projetoSelecionado}
             onVoltar={() => setProjetoSelecionadoId(null)}
             onAdicionarTarefa={adicionarTarefaNoProjeto}
+            onAlternarTarefa={alternarTarefaProjeto}
+            onAtualizarPreco={atualizarPrecoProjeto}
+            onAlternarEntrega={alternarStatusEntregaProjeto}
           />
         )}
       </main>

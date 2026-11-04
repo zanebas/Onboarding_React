@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react';
+import { MEMBROS_EQUIPE, formatarPreco } from '../data/mockProjects';
 import Badge from './Badge';
 
 const MAX_FUNCIONALIDADES = 4;
@@ -10,7 +11,13 @@ function formatarDataInput(valorIso) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
-function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
+function Projetos({
+  projetos,
+  onSelecionarProjeto,
+  onAdicionarProjeto,
+  onAtualizarPreco,
+  onAlternarEntrega,
+}) {
   const dialogRef = useRef(null);
   const pressedOutsideRef = useRef(false);
 
@@ -18,9 +25,14 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
   const [cliente, setCliente] = useState('');
   const [gerente, setGerente] = useState('');
   const [dataEntrega, setDataEntrega] = useState('');
+  const [preco, setPreco] = useState('');
   const [descricao, setDescricao] = useState('');
+  const [membrosSelecionados, setMembrosSelecionados] = useState([]);
   const [funcionalidades, setFuncionalidades] = useState(['']);
   const [erroForm, setErroForm] = useState('');
+
+  const [editandoPrecoId, setEditandoPrecoId] = useState(null);
+  const [valorPrecoEdicao, setValorPrecoEdicao] = useState('');
 
   function abrirMenuNovoProjeto() {
     setErroForm('');
@@ -31,10 +43,32 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
     dialogRef.current?.close();
   }
 
+  function iniciarEdicaoPreco(projeto) {
+    setEditandoPrecoId(projeto.id);
+    setValorPrecoEdicao(projeto.preco);
+  }
+
+  function salvarEdicaoPreco(e, projetoId) {
+    e.preventDefault();
+    if (!valorPrecoEdicao.trim()) return;
+    onAtualizarPreco(projetoId, valorPrecoEdicao);
+    setEditandoPrecoId(null);
+    setValorPrecoEdicao('');
+  }
+
   function atualizarFuncionalidade(index, valor) {
     setErroForm('');
     setFuncionalidades((atuais) =>
       atuais.map((item, i) => (i === index ? valor : item))
+    );
+  }
+
+  function alternarMembroSelecionado(nomeMembro) {
+    setErroForm('');
+    setMembrosSelecionados((atuais) =>
+      atuais.includes(nomeMembro)
+        ? atuais.filter((nomeAtual) => nomeAtual !== nomeMembro)
+        : [...atuais, nomeMembro]
     );
   }
 
@@ -54,6 +88,7 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
     const nomeLimpo = nome.trim();
     const clienteLimpo = cliente.trim();
     const gerenteLimpo = gerente.trim() || 'Samuel Zanebone';
+    const precoLimpo = preco.trim();
     const descricaoLimpa =
       descricao.trim() || 'Projeto cadastrado pela plataforma interna CP2eJr.';
 
@@ -62,8 +97,15 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
       .filter(Boolean)
       .slice(0, MAX_FUNCIONALIDADES);
 
-    if (!nomeLimpo || !clienteLimpo || !dataEntrega) {
-      setErroForm('Preencha o nome do projeto, o cliente e a data de entrega.');
+    if (!nomeLimpo || !clienteLimpo || !dataEntrega || !precoLimpo) {
+      setErroForm(
+        'Preencha o nome do projeto, o cliente, a data de entrega e o preço.'
+      );
+      return;
+    }
+
+    if (membrosSelecionados.length === 0) {
+      setErroForm('Selecione pelo menos 1 pessoa para trabalhar no projeto.');
       return;
     }
 
@@ -78,9 +120,11 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
       cliente: clienteLimpo,
       gerente: gerenteLimpo,
       dataEntrega: formatarDataInput(dataEntrega),
+      preco: formatarPreco(precoLimpo),
       status: 'Em andamento',
       progresso: 0,
       descricao: descricaoLimpa,
+      membrosAlocados: membrosSelecionados,
       tarefas: listaFuncionalidades.map((titulo, idx) => ({
         id: idx + 1,
         titulo,
@@ -94,7 +138,9 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
     setCliente('');
     setGerente('');
     setDataEntrega('');
+    setPreco('');
     setDescricao('');
+    setMembrosSelecionados([]);
     setFuncionalidades(['']);
     setErroForm('');
     fecharMenuNovoProjeto();
@@ -115,7 +161,7 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
       <div className="cabecalho-pagina cabecalho-projetos">
         <div>
           <h1>Projetos da Equipe</h1>
-          <p>Gerencie os projetos internos, prazos de entrega e funcionalidades.</p>
+          <p>Gerencie os projetos internos, prazos de entrega, valores e funcionalidades.</p>
         </div>
 
         <button
@@ -212,16 +258,35 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
             </div>
           </div>
 
-          <div className="campo-form">
-            <label htmlFor="gerente-projeto">Gerente Responsável</label>
-            <input
-              id="gerente-projeto"
-              name="gerente"
-              type="text"
-              placeholder="Ex: Samuel Zanebone"
-              value={gerente}
-              onChange={(e) => setGerente(e.target.value)}
-            />
+          <div className="linha-form-dupla">
+            <div className="campo-form">
+              <label htmlFor="preco-projeto">Preço do Projeto (R$)</label>
+              <input
+                id="preco-projeto"
+                name="preco"
+                type="text"
+                inputMode="decimal"
+                placeholder="Ex: R$ 9.500,00"
+                value={preco}
+                onChange={(e) => {
+                  setErroForm('');
+                  setPreco(e.target.value);
+                }}
+                required
+              />
+            </div>
+
+            <div className="campo-form">
+              <label htmlFor="gerente-projeto">Gerente Responsável</label>
+              <input
+                id="gerente-projeto"
+                name="gerente"
+                type="text"
+                placeholder="Ex: Samuel Zanebone"
+                value={gerente}
+                onChange={(e) => setGerente(e.target.value)}
+              />
+            </div>
           </div>
 
           <div className="campo-form">
@@ -235,6 +300,46 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
               onChange={(e) => setDescricao(e.target.value)}
             />
           </div>
+
+          <fieldset className="fieldset-funcionalidades">
+            <div className="topo-funcionalidades">
+              <legend>
+                Pessoas alocadas para trabalhar no projeto ({membrosSelecionados.length} selecionadas)
+              </legend>
+            </div>
+
+            <div className="grid-selecao-membros">
+              {MEMBROS_EQUIPE.map((membro) => {
+                const selecionado = membrosSelecionados.includes(membro.nome);
+                return (
+                  <label
+                    key={membro.id}
+                    className={
+                      selecionado
+                        ? 'opcao-membro-alocado is-active'
+                        : 'opcao-membro-alocado'
+                    }
+                  >
+                    <input
+                      type="checkbox"
+                      name="membrosAlocados"
+                      value={membro.nome}
+                      className="checkbox-membro"
+                      checked={selecionado}
+                      onChange={() => alternarMembroSelecionado(membro.nome)}
+                    />
+                    <span className="avatar-mini" aria-hidden="true">
+                      {membro.iniciais}
+                    </span>
+                    <span className="info-membro-selecao">
+                      <span className="nome-membro-selecao">{membro.nome}</span>
+                      <span className="cargo-membro-selecao">{membro.cargo}</span>
+                    </span>
+                  </label>
+                );
+              })}
+            </div>
+          </fieldset>
 
           <fieldset className="fieldset-funcionalidades">
             <div className="topo-funcionalidades">
@@ -307,37 +412,118 @@ function Projetos({ projetos, onSelecionarProjeto, onAdicionarProjeto }) {
       </dialog>
 
       <div className="grid-projetos">
-        {projetos.map((projeto) => (
-          <div key={projeto.id} className="card-projeto">
-            <div className="painel-topo">
-              <h2>{projeto.nome}</h2>
-              <Badge status={projeto.status} />
-            </div>
+        {projetos.map((projeto) => {
+          const estaEntregue = projeto.status === 'Entregue';
+          const editandoEstePreco = editandoPrecoId === projeto.id;
 
-            <div className="info-projeto">
-              <p><strong>Cliente:</strong> {projeto.cliente}</p>
-              <p><strong>Gerente:</strong> {projeto.gerente}</p>
-              <p><strong>Data de Entrega:</strong> {projeto.dataEntrega}</p>
-            </div>
+          return (
+            <div key={projeto.id} className="card-projeto">
+              <div className="painel-topo">
+                <h2>{projeto.nome}</h2>
+                <Badge status={projeto.status} />
+              </div>
 
-            <div className="area-progresso">
-              <p>Progresso {projeto.progresso ?? 0}%</p>
-              <div className="barra-progresso">
-                <div
-                  className="barra-preenchida"
-                  style={{ width: `${projeto.progresso ?? 0}%` }}
-                ></div>
+              <div className="info-projeto">
+                <p><strong>Cliente:</strong> {projeto.cliente}</p>
+                <p><strong>Gerente:</strong> {projeto.gerente}</p>
+                <p><strong>Data de Entrega:</strong> {projeto.dataEntrega}</p>
+
+                <div className="linha-preco-projeto">
+                  {editandoEstePreco ? (
+                    <form
+                      className="form-editar-preco"
+                      onSubmit={(e) => salvarEdicaoPreco(e, projeto.id)}
+                    >
+                      <label htmlFor={`input-preco-${projeto.id}`} className="sr-only">
+                        Novo preço do projeto {projeto.nome}
+                      </label>
+                      <input
+                        id={`input-preco-${projeto.id}`}
+                        name="preco"
+                        type="text"
+                        inputMode="decimal"
+                        value={valorPrecoEdicao}
+                        onChange={(e) => setValorPrecoEdicao(e.target.value)}
+                        autoFocus
+                      />
+                      <button type="submit" className="btn-salvar-preco">
+                        Salvar
+                      </button>
+                      <button
+                        type="button"
+                        className="btn-cancelar-preco"
+                        onClick={() => setEditandoPrecoId(null)}
+                      >
+                        Cancelar
+                      </button>
+                    </form>
+                  ) : (
+                    <p className="texto-preco-card">
+                      <strong>Preço:</strong>{' '}
+                      <span className="valor-preco-destaque">{projeto.preco}</span>
+                      <button
+                        type="button"
+                        className="btn-editar-inline"
+                        onClick={() => iniciarEdicaoPreco(projeto)}
+                      >
+                        Editar preço
+                      </button>
+                    </p>
+                  )}
+                </div>
+
+                {projeto.membrosAlocados?.length > 0 && (
+                  <div className="projetos-membro">
+                    <span className="label-projetos-membro">Equipe:</span>
+                    <div className="lista-projetos-membro">
+                      {projeto.membrosAlocados.map((nomeMembro) => (
+                        <span key={nomeMembro} className="tag-projeto-membro">
+                          {nomeMembro}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="area-progresso">
+                <p>Progresso {projeto.progresso ?? 0}%</p>
+                <div className="barra-progresso">
+                  <div
+                    className={
+                      estaEntregue
+                        ? 'barra-preenchida barra-concluida'
+                        : 'barra-preenchida'
+                    }
+                    style={{ width: `${projeto.progresso ?? 0}%` }}
+                  ></div>
+                </div>
+              </div>
+
+              <div className="acoes-card-projeto">
+                <button
+                  type="button"
+                  className="botao-detalhes"
+                  onClick={() => onSelecionarProjeto(projeto)}
+                >
+                  Ver Detalhes
+                </button>
+
+                <button
+                  type="button"
+                  className={
+                    estaEntregue
+                      ? 'botao-entrega-status em-andamento'
+                      : 'botao-entrega-status entregar'
+                  }
+                  onClick={() => onAlternarEntrega(projeto.id)}
+                >
+                  {estaEntregue ? '↺ Voltar p/ Em Andamento' : '✓ Entregar Projeto'}
+                </button>
               </div>
             </div>
-
-            <button
-              className="botao-detalhes"
-              onClick={() => onSelecionarProjeto(projeto)}
-            >
-              Ver Detalhes
-            </button>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

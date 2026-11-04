@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { MEMBROS_EQUIPE } from '../data/mockProjects';
 import Badge from './Badge';
 
 function obterIniciais(nomeCompleto) {
@@ -22,12 +23,23 @@ function Dashboard({
   const [comentariosAbertos, setComentariosAbertos] = useState({ 1: true });
   const [textoComentarios, setTextoComentarios] = useState({});
 
-  const equipe = [
-    { id: 1, nome: 'Samuel Zanebone', cargo: 'Dev Front-end', iniciais: 'SZ', tarefas: '2 entregas ativas' },
-    { id: 2, nome: 'Vitor Hugo Felipe Noronha', cargo: 'Gerente', iniciais: 'VN', tarefas: '2 entregas ativas' },
-    { id: 3, nome: 'Enzo Ribeiro da Silva', cargo: 'Dev Back-end', iniciais: 'ER', tarefas: '3 entregas ativas' },
-    { id: 4, nome: 'Lucas Pereira Maciel Luz', cargo: 'Designer UI/UX', iniciais: 'LL', tarefas: '2 entregas ativas' }
-  ];
+  const equipe = MEMBROS_EQUIPE.map((membro) => {
+    const projetosDoMembro = projetos
+      .filter(
+        (p) =>
+          p.membrosAlocados?.some(
+            (nomeAlocado) =>
+              nomeAlocado.toLowerCase() === membro.nome.toLowerCase()
+          ) || p.gerente.toLowerCase() === membro.nome.toLowerCase()
+      )
+      .map((p) => p.nome);
+    const todosProjetos = Array.from(new Set(projetosDoMembro));
+    return {
+      ...membro,
+      projetosTrabalhando: todosProjetos,
+      tarefas: `${todosProjetos.length} entregas ativas`,
+    };
+  });
 
   const projetosAtivos = projetos.filter((p) => p.status !== 'Entregue').length;
   const projetosConcluidos = projetos.filter((p) => p.status === 'Entregue').length;
@@ -130,7 +142,7 @@ function Dashboard({
                   <div>
                     <p className="item-titulo">{projeto.nome}</p>
                     <p className="item-subtitulo">
-                      {projeto.gerente} • Entrega: {projeto.dataEntrega}
+                      {projeto.gerente} • Entrega: {projeto.dataEntrega} • {projeto.preco}
                     </p>
                   </div>
 
@@ -338,15 +350,28 @@ function Dashboard({
             <div className="lista-simples">
               {equipe.map((membro) => (
                 <div key={membro.id} className="item-equipe">
-                  <div className="membro-esquerda">
-                    <div className="avatar">{membro.iniciais}</div>
-                    <div>
-                      <p className="item-titulo">{membro.nome}</p>
-                      <p className="item-subtitulo">{membro.cargo}</p>
+                  <div className="item-equipe-topo">
+                    <div className="membro-esquerda">
+                      <div className="avatar">{membro.iniciais}</div>
+                      <div>
+                        <p className="item-titulo">{membro.nome}</p>
+                        <p className="item-subtitulo">{membro.cargo}</p>
+                      </div>
                     </div>
+
+                    <span className="tag-tarefas">{membro.tarefas}</span>
                   </div>
 
-                  <span className="tag-tarefas">{membro.tarefas}</span>
+                  <div className="projetos-membro">
+                    <span className="label-projetos-membro">Projetos:</span>
+                    <div className="lista-projetos-membro">
+                      {membro.projetosTrabalhando.map((nomeProjeto) => (
+                        <span key={nomeProjeto} className="tag-projeto-membro">
+                          {nomeProjeto}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>

@@ -3,8 +3,6 @@ function Badge({ status }) {
 
   if (status === 'Em andamento') {
     classeCor = 'badge badge-azul';
-  } else if (status === 'Em revisão') {
-    classeCor = 'badge badge-amarelo';
   } else if (status === 'Entregue') {
     classeCor = 'badge badge-verde';
   }
