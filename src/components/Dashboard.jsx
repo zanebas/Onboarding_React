@@ -89,7 +89,7 @@ function Dashboard({
         <p>Acompanhe o status das entregas, demandas pendentes e o ritmo da equipe em tempo real.</p>
       </div>
 
-      {/* 4 Cards do Topo */}
+      {/* 3 Cards do Topo */}
       <div className="cards-topo">
         <div className="card-resumo">
           <div className="card-resumo-topo">
@@ -113,14 +113,6 @@ function Dashboard({
             <span>Projetos Concluídos</span>
           </div>
           <strong>{projetosConcluidos}</strong>
-        </div>
-
-        <div className="card-resumo">
-          <div className="card-resumo-topo">
-            <span className="status-dot dot-roxo" aria-hidden="true"></span>
-            <span>Membros da Equipe</span>
-          </div>
-          <strong>8</strong>
         </div>
       </div>
 
