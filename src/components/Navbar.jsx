@@ -18,6 +18,7 @@ function Navbar({ paginaAtual, setPaginaAtual, setProjetoSelecionado }) {
           type="button"
           className="navbar-marca"
           onClick={irParaDashboard}
+          aria-label="Ir para o Dashboard"
         >
           <img
             src={logoCp2eJr}
@@ -26,8 +27,11 @@ function Navbar({ paginaAtual, setPaginaAtual, setProjetoSelecionado }) {
             height="397"
             className="navbar-logo"
           />
-          <span className="navbar-titulo">Projetos Internos CP2eJr</span>
         </button>
+
+        <span className="navbar-titulo" onClick={irParaDashboard}>
+          Projetos Internos CP2eJr
+        </span>
 
         <div className="navbar-botoes">
           <button
