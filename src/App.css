@@ -1,14 +1,16 @@
 :root {
-  --cor-fundo: #18181b;
-  --cor-superficie: #27272a;
-  --cor-superficie-interna: #1f1f22;
-  --cor-elemento: #3f3f46;
-  --cor-elemento-hover: #52525b;
-  --cor-barra-progresso: #71717a;
+  color-scheme: dark;
 
-  --cor-borda: #3f3f46;
-  --cor-borda-forte: #1d1d20;
-  --cor-borda-divisoria: #2e2e33;
+  --cor-fundo: #09090b;
+  --cor-superficie: #121215;
+  --cor-superficie-interna: #18181b;
+  --cor-elemento: #27272a;
+  --cor-elemento-hover: #3f3f46;
+  --cor-barra-progresso: #52525b;
+
+  --cor-borda: #27272a;
+  --cor-borda-forte: #3f3f46;
+  --cor-borda-divisoria: rgba(255, 255, 255, 0.08);
   --cor-borda-sutil: rgba(255, 255, 255, 0.08);
 
   --cor-texto-principal: #f4f4f5;
@@ -20,7 +22,7 @@
   --cor-primaria: #3b82f6;
   --cor-primaria-hover: #2563eb;
   --cor-foco: #60a5fa;
-  --cor-selecao-fundo: rgba(59, 130, 246, 0.14);
+  --cor-selecao-fundo: rgba(255, 255, 255, 0.06);
 
   --cor-dot-azul: #3b82f6;
   --cor-dot-laranja: #f59e0b;
@@ -41,7 +43,7 @@
   --cor-curtida-fundo: rgba(244, 63, 94, 0.15);
   --cor-curtida-borda: rgba(244, 63, 94, 0.45);
 
-  --cor-backdrop: rgba(0, 0, 0, 0.72);
+  --cor-backdrop: rgba(0, 0, 0, 0.78);
 }
 
 * {
@@ -71,9 +73,9 @@ body {
 }
 
 .navbar-container {
-  max-width: 1150px;
+  max-width: 1240px;
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -82,7 +84,7 @@ body {
 .navbar-marca {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 28px;
   background: transparent;
   border: none;
   padding: 0;
@@ -394,6 +396,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  min-width: 0;
 }
 
 .avatar {
@@ -408,6 +411,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .tag-tarefas {
@@ -417,6 +421,8 @@ body {
   font-size: 12px;
   padding: 4px 8px;
   border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .cabecalho-projetos {
