@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Badge from './Badge';
+import PrioridadeSelect from './PrioridadeSelect';
 
 function ProjetoDetalhes({
   projeto,
@@ -8,6 +9,7 @@ function ProjetoDetalhes({
   onAlternarTarefa,
   onAtualizarPreco,
   onAlternarEntrega,
+  onAlterarPrioridade,
 }) {
   const [novaTarefa, setNovaTarefa] = useState('');
   const [editandoPreco, setEditandoPreco] = useState(false);
@@ -116,6 +118,18 @@ function ProjetoDetalhes({
               {projeto.preco}
             </strong>
           )}
+        </div>
+
+        <div className="card-resumo">
+          <label htmlFor="prioridade-detalhes">Prioridade</label>
+          <PrioridadeSelect
+            id="prioridade-detalhes"
+            prioridade={projeto.prioridade}
+            nomeProjeto={projeto.nome}
+            onChange={(novaPrioridade) =>
+              onAlterarPrioridade(projeto.id, novaPrioridade)
+            }
+          />
         </div>
 
         <div className="card-resumo">

@@ -13,6 +13,30 @@ export function formatarPreco(valor) {
   return `R$ ${limpo}`;
 }
 
+export const PRIORIDADES = ['Alta', 'Média', 'Baixa'];
+
+const PESO_PRIORIDADE = { Alta: 0, Média: 1, Baixa: 2 };
+
+function dataParaTimestamp(dataBr) {
+  const [dia, mes, ano] = String(dataBr ?? '').split('/').map(Number);
+  if (!dia || !mes || !ano) return Number.MAX_SAFE_INTEGER;
+  return new Date(ano, mes - 1, dia).getTime();
+}
+
+export function ordenarProjetosPorPrioridade(projetos) {
+  return [...projetos].sort((a, b) => {
+    const aEntregue = a.status === 'Entregue';
+    const bEntregue = b.status === 'Entregue';
+    if (aEntregue !== bEntregue) return aEntregue ? 1 : -1;
+
+    const pesoA = PESO_PRIORIDADE[a.prioridade] ?? PESO_PRIORIDADE.Média;
+    const pesoB = PESO_PRIORIDADE[b.prioridade] ?? PESO_PRIORIDADE.Média;
+    if (pesoA !== pesoB) return pesoA - pesoB;
+
+    return dataParaTimestamp(a.dataEntrega) - dataParaTimestamp(b.dataEntrega);
+  });
+}
+
 export const MEMBROS_EQUIPE = [
   {
     id: 1,
@@ -53,6 +77,7 @@ export const mockProjects = [
     cliente: 'Restaurante Casa do Gordo',
     gerente: 'Vitor Hugo Felipe Noronha',
     dataEntrega: '15/11/2026',
+    prioridade: 'Alta',
     preco: 'R$ 12.500,00',
     status: 'Em andamento',
     progresso: 0,
@@ -76,6 +101,7 @@ export const mockProjects = [
     cliente: 'Franquia Açaí do Gutão',
     gerente: 'Petrus de Souza Matos Pfaffenbach',
     dataEntrega: '28/11/2026',
+    prioridade: 'Média',
     preco: 'R$ 8.900,00',
     status: 'Em andamento',
     progresso: 0,
@@ -98,6 +124,7 @@ export const mockProjects = [
     cliente: 'Instituto Nacional de Telecomunicações',
     gerente: 'Enzo Ribeiro da Silva',
     dataEntrega: '10/10/2026',
+    prioridade: 'Alta',
     preco: 'R$ 15.000,00',
     status: 'Entregue',
     progresso: 100,
@@ -118,6 +145,7 @@ export const mockProjects = [
     cliente: 'CP2eJr',
     gerente: 'Lucas Pereira Maciel Luz',
     dataEntrega: '05/12/2026',
+    prioridade: 'Baixa',
     preco: 'R$ 6.400,00',
     status: 'Em andamento',
     progresso: 0,

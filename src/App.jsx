@@ -86,6 +86,16 @@ function App() {
     );
   }
 
+  function alterarPrioridadeProjeto(projetoId, novaPrioridade) {
+    setProjetos((atuais) =>
+      atuais.map((projeto) =>
+        projeto.id === projetoId
+          ? { ...projeto, prioridade: novaPrioridade }
+          : projeto
+      )
+    );
+  }
+
   function alternarStatusEntregaProjeto(projetoId) {
     setProjetos((atuais) =>
       atuais.map((projeto) => {
@@ -272,6 +282,7 @@ function App() {
             onAdicionarProjeto={adicionarProjeto}
             onAtualizarPreco={atualizarPrecoProjeto}
             onAlternarEntrega={alternarStatusEntregaProjeto}
+            onAlterarPrioridade={alterarPrioridadeProjeto}
           />
         )}
 
@@ -283,6 +294,7 @@ function App() {
             onAlternarTarefa={alternarTarefaProjeto}
             onAtualizarPreco={atualizarPrecoProjeto}
             onAlternarEntrega={alternarStatusEntregaProjeto}
+            onAlterarPrioridade={alterarPrioridadeProjeto}
           />
         )}
       </main>

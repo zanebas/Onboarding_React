@@ -1,6 +1,12 @@
 import { useRef, useState } from 'react';
-import { MEMBROS_EQUIPE, formatarPreco } from '../data/mockProjects';
+import {
+  MEMBROS_EQUIPE,
+  PRIORIDADES,
+  formatarPreco,
+  ordenarProjetosPorPrioridade,
+} from '../data/mockProjects';
 import Badge from './Badge';
+import PrioridadeSelect from './PrioridadeSelect';
 
 const MAX_FUNCIONALIDADES = 4;
 
@@ -17,6 +23,7 @@ function Projetos({
   onAdicionarProjeto,
   onAtualizarPreco,
   onAlternarEntrega,
+  onAlterarPrioridade,
 }) {
   const dialogRef = useRef(null);
   const pressedOutsideRef = useRef(false);
@@ -26,6 +33,7 @@ function Projetos({
   const [gerente, setGerente] = useState('');
   const [dataEntrega, setDataEntrega] = useState('');
   const [preco, setPreco] = useState('');
+  const [prioridade, setPrioridade] = useState('Média');
   const [descricao, setDescricao] = useState('');
   const [membrosSelecionados, setMembrosSelecionados] = useState([]);
   const [funcionalidades, setFuncionalidades] = useState(['']);
@@ -122,6 +130,7 @@ function Projetos({
       dataEntrega: formatarDataInput(dataEntrega),
       preco: formatarPreco(precoLimpo),
       status: 'Em andamento',
+      prioridade,
       progresso: 0,
       descricao: descricaoLimpa,
       membrosAlocados: membrosSelecionados,
@@ -139,6 +148,7 @@ function Projetos({
     setGerente('');
     setDataEntrega('');
     setPreco('');
+    setPrioridade('Média');
     setDescricao('');
     setMembrosSelecionados([]);
     setFuncionalidades(['']);
@@ -290,6 +300,24 @@ function Projetos({
           </div>
 
           <div className="campo-form">
+            <label htmlFor="prioridade-projeto">Prioridade</label>
+            <select
+              id="prioridade-projeto"
+              name="prioridade"
+              className="select-campo-form"
+              value={prioridade}
+              onChange={(e) => setPrioridade(e.target.value)}
+              required
+            >
+              {PRIORIDADES.map((nivel) => (
+                <option key={nivel} value={nivel}>
+                  {nivel}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="campo-form">
             <label htmlFor="descricao-projeto">Descrição Breve</label>
             <textarea
               id="descricao-projeto"
@@ -412,7 +440,7 @@ function Projetos({
       </dialog>
 
       <div className="grid-projetos">
-        {projetos.map((projeto) => {
+        {ordenarProjetosPorPrioridade(projetos).map((projeto) => {
           const estaEntregue = projeto.status === 'Entregue';
           const editandoEstePreco = editandoPrecoId === projeto.id;
 
@@ -427,6 +455,23 @@ function Projetos({
                 <p><strong>Cliente:</strong> {projeto.cliente}</p>
                 <p><strong>Gerente:</strong> {projeto.gerente}</p>
                 <p><strong>Data de Entrega:</strong> {projeto.dataEntrega}</p>
+
+                <div className="linha-prioridade-projeto">
+                  <label
+                    htmlFor={`prioridade-${projeto.id}`}
+                    className="rotulo-prioridade"
+                  >
+                    Prioridade:
+                  </label>
+                  <PrioridadeSelect
+                    id={`prioridade-${projeto.id}`}
+                    prioridade={projeto.prioridade}
+                    nomeProjeto={projeto.nome}
+                    onChange={(novaPrioridade) =>
+                      onAlterarPrioridade(projeto.id, novaPrioridade)
+                    }
+                  />
+                </div>
 
                 <div className="linha-preco-projeto">
                   {editandoEstePreco ? (

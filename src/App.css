@@ -200,7 +200,88 @@ body {
 }
 
 .cards-detalhes-cinco {
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.badge-prioridade,
+.select-prioridade {
+  --prioridade-cor: #71717a;
+  --prioridade-fundo: rgba(113, 113, 122, 0.14);
+  --prioridade-borda: rgba(113, 113, 122, 0.4);
+  background-color: var(--prioridade-fundo);
+  color: var(--prioridade-cor);
+  border: 1px solid var(--prioridade-borda);
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  font-family: inherit;
+}
+
+.badge-prioridade {
+  padding: 4px 10px;
+  white-space: nowrap;
+}
+
+.select-prioridade {
+  color-scheme: dark;
+  padding: 4px 8px;
+  min-height: 28px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.select-prioridade:focus-visible {
+  outline: 2px solid var(--cor-foco);
+  outline-offset: 2px;
+}
+
+.prioridade-alta {
+  --prioridade-cor: #ef4444;
+  --prioridade-fundo: rgba(239, 68, 68, 0.14);
+  --prioridade-borda: rgba(239, 68, 68, 0.4);
+}
+
+.prioridade-media {
+  --prioridade-cor: #f59e0b;
+  --prioridade-fundo: rgba(245, 158, 11, 0.14);
+  --prioridade-borda: rgba(245, 158, 11, 0.4);
+}
+
+.prioridade-baixa {
+  --prioridade-cor: #71717a;
+  --prioridade-fundo: rgba(113, 113, 122, 0.14);
+  --prioridade-borda: rgba(113, 113, 122, 0.4);
+}
+
+.linha-prioridade-projeto {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.rotulo-prioridade {
+  color: var(--cor-texto-suave);
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.select-campo-form {
+  color-scheme: dark;
+  background-color: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
+  border-radius: 6px;
+  padding: 10px 12px;
+  min-height: 44px;
+  color: var(--cor-texto-principal);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.select-campo-form:focus-visible {
+  outline: 2px solid var(--cor-foco);
+  outline-offset: 1px;
+  border-color: var(--cor-foco);
 }
 
 .card-resumo {
@@ -242,7 +323,8 @@ body {
   background-color: var(--cor-dot-roxo);
 }
 
-.card-resumo span {
+.card-resumo span,
+.card-resumo label {
   color: var(--cor-texto-suave);
   font-size: 14px;
 }

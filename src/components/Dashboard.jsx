@@ -1,6 +1,10 @@
 import { useState } from 'react';
-import { MEMBROS_EQUIPE } from '../data/mockProjects';
+import {
+  MEMBROS_EQUIPE,
+  ordenarProjetosPorPrioridade,
+} from '../data/mockProjects';
 import Badge from './Badge';
+import { PrioridadeBadge } from './PrioridadeSelect';
 
 function obterIniciais(nomeCompleto) {
   if (!nomeCompleto) return 'SZ';
@@ -40,6 +44,8 @@ function Dashboard({
       tarefas: `${todosProjetos.length} entregas ativas`,
     };
   });
+
+  const projetosOrdenados = ordenarProjetosPorPrioridade(projetos);
 
   const projetosAtivos = projetos.filter((p) => p.status !== 'Entregue').length;
   const projetosConcluidos = projetos.filter((p) => p.status === 'Entregue').length;
@@ -129,7 +135,7 @@ function Dashboard({
             </div>
 
             <div className="lista-simples">
-              {projetos.map((projeto) => (
+              {projetosOrdenados.map((projeto) => (
                 <div key={projeto.id} className="item-lista">
                   <div>
                     <p className="item-titulo">{projeto.nome}</p>
@@ -139,6 +145,7 @@ function Dashboard({
                   </div>
 
                   <div className="item-direita">
+                    <PrioridadeBadge prioridade={projeto.prioridade} />
                     <span className="porcentagem">{projeto.progresso ?? 0}%</span>
                     <Badge status={projeto.status} />
                   </div>
