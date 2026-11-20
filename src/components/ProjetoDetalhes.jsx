@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Pencil } from 'lucide-react';
 import Badge from './Badge';
 import PrioridadeSelect from './PrioridadeSelect';
 
@@ -85,12 +86,14 @@ function ProjetoDetalhes({
               <button
                 type="button"
                 className="btn-editar-inline"
+                title="Editar preço"
+                aria-label="Editar preço do projeto"
                 onClick={() => {
                   setNovoPreco(projeto.preco);
                   setEditandoPreco(true);
                 }}
               >
-                Editar
+                <Pencil size={13} aria-hidden="true" />
               </button>
             )}
           </div>

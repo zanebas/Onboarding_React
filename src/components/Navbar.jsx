@@ -18,7 +18,6 @@ function Navbar({ paginaAtual, setPaginaAtual, setProjetoSelecionado }) {
           type="button"
           className="navbar-marca"
           onClick={irParaDashboard}
-          aria-label="Ir para o Dashboard"
         >
           <img
             src={logoCp2eJr}
@@ -27,16 +26,14 @@ function Navbar({ paginaAtual, setPaginaAtual, setProjetoSelecionado }) {
             height="397"
             className="navbar-logo"
           />
+          <span className="navbar-titulo">Projetos Internos CP2eJr</span>
         </button>
 
-        <span className="navbar-titulo" onClick={irParaDashboard}>
-          Projetos Internos CP2eJr
-        </span>
-
-        <div className="navbar-botoes">
+        <nav className="navbar-botoes" aria-label="Navegação principal">
           <button
             type="button"
             className={paginaAtual === 'dashboard' ? 'nav-btn ativo' : 'nav-btn'}
+            aria-current={paginaAtual === 'dashboard' ? 'page' : undefined}
             onClick={irParaDashboard}
           >
             Dashboard
@@ -45,11 +42,12 @@ function Navbar({ paginaAtual, setPaginaAtual, setProjetoSelecionado }) {
           <button
             type="button"
             className={paginaAtual === 'projetos' ? 'nav-btn ativo' : 'nav-btn'}
+            aria-current={paginaAtual === 'projetos' ? 'page' : undefined}
             onClick={irParaProjetos}
           >
             Projetos
           </button>
-        </div>
+        </nav>
       </div>
     </header>
   );

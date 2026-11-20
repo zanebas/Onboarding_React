@@ -1,14 +1,19 @@
 import { useRef, useState } from 'react';
+import { Banknote, Building2, Calendar, Flag, Pencil, User } from 'lucide-react';
 import {
   MEMBROS_EQUIPE,
   PRIORIDADES,
+  estaAtrasado,
   formatarPreco,
+  obterIniciais,
   ordenarProjetosPorPrioridade,
 } from '../data/mockProjects';
 import Badge from './Badge';
 import PrioridadeSelect from './PrioridadeSelect';
 
 const MAX_FUNCIONALIDADES = 4;
+
+const novaFuncionalidade = () => ({ id: null, titulo: '', concluida: false });
 
 function formatarDataInput(valorIso) {
   if (!valorIso) return '30/11/2026';
@@ -17,10 +22,21 @@ function formatarDataInput(valorIso) {
   return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
+function dataBrParaIso(dataBr) {
+  const partes = String(dataBr ?? '').split('/');
+  if (partes.length !== 3) return '';
+  return `${partes[2]}-${partes[1].padStart(2, '0')}-${partes[0].padStart(2, '0')}`;
+}
+
+function valorPrecoParaInput(preco) {
+  return String(preco ?? '').replace(/^R\$\s*/, '');
+}
+
 function Projetos({
   projetos,
   onSelecionarProjeto,
   onAdicionarProjeto,
+  onEditarProjeto,
   onAtualizarPreco,
   onAlternarEntrega,
   onAlterarPrioridade,
@@ -28,6 +44,7 @@ function Projetos({
   const dialogRef = useRef(null);
   const pressedOutsideRef = useRef(false);
 
+  const [projetoEditandoId, setProjetoEditandoId] = useState(null);
   const [nome, setNome] = useState('');
   const [cliente, setCliente] = useState('');
   const [gerente, setGerente] = useState('');
@@ -36,13 +53,50 @@ function Projetos({
   const [prioridade, setPrioridade] = useState('Média');
   const [descricao, setDescricao] = useState('');
   const [membrosSelecionados, setMembrosSelecionados] = useState([]);
-  const [funcionalidades, setFuncionalidades] = useState(['']);
+  const [funcionalidades, setFuncionalidades] = useState([novaFuncionalidade()]);
   const [erroForm, setErroForm] = useState('');
 
   const [editandoPrecoId, setEditandoPrecoId] = useState(null);
   const [valorPrecoEdicao, setValorPrecoEdicao] = useState('');
 
+  function limparFormulario() {
+    setProjetoEditandoId(null);
+    setNome('');
+    setCliente('');
+    setGerente('');
+    setDataEntrega('');
+    setPreco('');
+    setPrioridade('Média');
+    setDescricao('');
+    setMembrosSelecionados([]);
+    setFuncionalidades([novaFuncionalidade()]);
+    setErroForm('');
+  }
+
   function abrirMenuNovoProjeto() {
+    limparFormulario();
+    dialogRef.current?.showModal();
+  }
+
+  function abrirEdicaoProjeto(projeto) {
+    setProjetoEditandoId(projeto.id);
+    setNome(projeto.nome);
+    setCliente(projeto.cliente);
+    setGerente(projeto.gerente);
+    setDataEntrega(dataBrParaIso(projeto.dataEntrega));
+    setPreco(valorPrecoParaInput(projeto.preco));
+    setPrioridade(projeto.prioridade ?? 'Média');
+    setDescricao(projeto.descricao ?? '');
+    setMembrosSelecionados(projeto.membrosAlocados ?? []);
+    setFuncionalidades(
+      projeto.tarefas.length > 0
+        ? projeto.tarefas.map((t) => ({
+            id: t.id,
+            titulo: t.titulo,
+            concluida: t.concluida,
+          }))
+        : [novaFuncionalidade()]
+    );
     setErroForm('');
     dialogRef.current?.showModal();
   }
@@ -67,7 +121,7 @@ function Projetos({
   function atualizarFuncionalidade(index, valor) {
     setErroForm('');
     setFuncionalidades((atuais) =>
-      atuais.map((item, i) => (i === index ? valor : item))
+      atuais.map((item, i) => (i === index ? { ...item, titulo: valor } : item))
     );
   }
 
@@ -82,7 +136,7 @@ function Projetos({
 
   function adicionarCampoFuncionalidade() {
     if (funcionalidades.length >= MAX_FUNCIONALIDADES) return;
-    setFuncionalidades((atuais) => [...atuais, '']);
+    setFuncionalidades((atuais) => [...atuais, novaFuncionalidade()]);
   }
 
   function removerCampoFuncionalidade(index) {
@@ -101,8 +155,8 @@ function Projetos({
       descricao.trim() || 'Projeto cadastrado pela plataforma interna CP2eJr.';
 
     const listaFuncionalidades = funcionalidades
-      .map((f) => f.trim())
-      .filter(Boolean)
+      .map((f) => ({ ...f, titulo: f.titulo.trim() }))
+      .filter((f) => f.titulo)
       .slice(0, MAX_FUNCIONALIDADES);
 
     if (!nomeLimpo || !clienteLimpo || !dataEntrega || !precoLimpo) {
@@ -122,37 +176,41 @@ function Projetos({
       return;
     }
 
-    const novoProjeto = {
-      id: Date.now(),
-      nome: nomeLimpo,
-      cliente: clienteLimpo,
-      gerente: gerenteLimpo,
-      dataEntrega: formatarDataInput(dataEntrega),
-      preco: formatarPreco(precoLimpo),
-      status: 'Em andamento',
-      prioridade,
-      progresso: 0,
-      descricao: descricaoLimpa,
-      membrosAlocados: membrosSelecionados,
-      tarefas: listaFuncionalidades.map((titulo, idx) => ({
-        id: idx + 1,
-        titulo,
-        concluida: false,
-      })),
-    };
+    const tarefas = listaFuncionalidades.map((f, idx) => ({
+      id: f.id ?? Date.now() + idx,
+      titulo: f.titulo,
+      concluida: f.concluida,
+    }));
 
-    onAdicionarProjeto(novoProjeto);
+    if (projetoEditandoId !== null) {
+      onEditarProjeto(projetoEditandoId, {
+        nome: nomeLimpo,
+        cliente: clienteLimpo,
+        gerente: gerenteLimpo,
+        dataEntrega: formatarDataInput(dataEntrega),
+        preco: formatarPreco(precoLimpo),
+        prioridade,
+        descricao: descricaoLimpa,
+        membrosAlocados: membrosSelecionados,
+        tarefas,
+      });
+    } else {
+      onAdicionarProjeto({
+        id: Date.now(),
+        nome: nomeLimpo,
+        cliente: clienteLimpo,
+        gerente: gerenteLimpo,
+        dataEntrega: formatarDataInput(dataEntrega),
+        preco: formatarPreco(precoLimpo),
+        status: 'Em andamento',
+        prioridade,
+        progresso: 0,
+        descricao: descricaoLimpa,
+        membrosAlocados: membrosSelecionados,
+        tarefas: tarefas.map((t, idx) => ({ ...t, id: idx + 1 })),
+      });
+    }
 
-    setNome('');
-    setCliente('');
-    setGerente('');
-    setDataEntrega('');
-    setPreco('');
-    setPrioridade('Média');
-    setDescricao('');
-    setMembrosSelecionados([]);
-    setFuncionalidades(['']);
-    setErroForm('');
     fecharMenuNovoProjeto();
   }
 
@@ -171,7 +229,6 @@ function Projetos({
       <div className="cabecalho-pagina cabecalho-projetos">
         <div>
           <h1>Projetos da Equipe</h1>
-          <p>Gerencie os projetos internos, prazos de entrega, valores e funcionalidades.</p>
         </div>
 
         <button
@@ -188,6 +245,7 @@ function Projetos({
         aria-labelledby="modal-novo-projeto-titulo"
         {...({ closedby: 'any' })}
         className="modal-novo-projeto"
+        onClose={limparFormulario}
         onPointerDown={(e) => {
           if (dialogRef.current) {
             pressedOutsideRef.current = isOutsideDialog(e, dialogRef.current);
@@ -206,11 +264,13 @@ function Projetos({
         }}
       >
         <div className="modal-cabecalho">
-          <h2 id="modal-novo-projeto-titulo">Adicionar Novo Projeto</h2>
+          <h2 id="modal-novo-projeto-titulo">
+            {projetoEditandoId !== null ? 'Editar Projeto' : 'Adicionar Novo Projeto'}
+          </h2>
           <button
             type="button"
             className="botao-fechar-modal"
-            aria-label="Fechar menu de novo projeto"
+            aria-label="Fechar menu do projeto"
             onClick={fecharMenuNovoProjeto}
           >
             ✕
@@ -398,7 +458,7 @@ function Projetos({
                       name={`funcionalidade_${index + 1}`}
                       type="text"
                       placeholder={`Descreva a funcionalidade ${index + 1}...`}
-                      value={func}
+                      value={func.titulo}
                       onChange={(e) => atualizarFuncionalidade(index, e.target.value)}
                       required={index === 0}
                     />
@@ -433,7 +493,7 @@ function Projetos({
               Cancelar
             </button>
             <button type="submit" className="botao-salvar-projeto">
-              Criar Projeto
+              {projetoEditandoId !== null ? 'Salvar Alterações' : 'Criar Projeto'}
             </button>
           </div>
         </form>
@@ -448,82 +508,147 @@ function Projetos({
             <div key={projeto.id} className="card-projeto">
               <div className="painel-topo">
                 <h2>{projeto.nome}</h2>
-                <Badge status={projeto.status} />
+                <div className="topo-card-acoes">
+                  <Badge status={projeto.status} />
+                  <button
+                    type="button"
+                    className="btn-editar-projeto"
+                    title="Editar projeto"
+                    aria-label={`Editar projeto ${projeto.nome}`}
+                    onClick={() => abrirEdicaoProjeto(projeto)}
+                  >
+                    <Pencil size={14} aria-hidden="true" />
+                    <span>Editar</span>
+                  </button>
+                </div>
               </div>
 
               <div className="info-projeto">
-                <p><strong>Cliente:</strong> {projeto.cliente}</p>
-                <p><strong>Gerente:</strong> {projeto.gerente}</p>
-                <p><strong>Data de Entrega:</strong> {projeto.dataEntrega}</p>
+                <dl className="meta-grid-projeto">
+                  <div className="meta-item-projeto">
+                    <dt>
+                      <Building2 size={13} aria-hidden="true" />
+                      <span>Cliente</span>
+                    </dt>
+                    <dd>{projeto.cliente}</dd>
+                  </div>
 
-                <div className="linha-prioridade-projeto">
-                  <label
-                    htmlFor={`prioridade-${projeto.id}`}
-                    className="rotulo-prioridade"
-                  >
-                    Prioridade:
-                  </label>
-                  <PrioridadeSelect
-                    id={`prioridade-${projeto.id}`}
-                    prioridade={projeto.prioridade}
-                    nomeProjeto={projeto.nome}
-                    onChange={(novaPrioridade) =>
-                      onAlterarPrioridade(projeto.id, novaPrioridade)
-                    }
-                  />
-                </div>
+                  <div className="meta-item-projeto">
+                    <dt>
+                      <User size={13} aria-hidden="true" />
+                      <span>Gerente</span>
+                    </dt>
+                    <dd>{projeto.gerente}</dd>
+                  </div>
 
-                <div className="linha-preco-projeto">
-                  {editandoEstePreco ? (
-                    <form
-                      className="form-editar-preco"
-                      onSubmit={(e) => salvarEdicaoPreco(e, projeto.id)}
-                    >
-                      <label htmlFor={`input-preco-${projeto.id}`} className="sr-only">
-                        Novo preço do projeto {projeto.nome}
-                      </label>
-                      <input
-                        id={`input-preco-${projeto.id}`}
-                        name="preco"
-                        type="text"
-                        inputMode="decimal"
-                        value={valorPrecoEdicao}
-                        onChange={(e) => setValorPrecoEdicao(e.target.value)}
-                        autoFocus
+                  <div className="meta-item-projeto">
+                    <dt>
+                      <Calendar size={13} aria-hidden="true" />
+                      <span>Entrega</span>
+                    </dt>
+                    <dd>
+                      <span
+                        className={
+                          estaAtrasado(projeto)
+                            ? 'data-entrega data-atrasada'
+                            : 'data-entrega'
+                        }
+                      >
+                        {projeto.dataEntrega}
+                      </span>
+                      {estaAtrasado(projeto) && (
+                        <span className="indicador-atraso">Atrasado</span>
+                      )}
+                    </dd>
+                  </div>
+
+                  <div className="meta-item-projeto">
+                    <dt>
+                      <Flag size={13} aria-hidden="true" />
+                      <label htmlFor={`prioridade-${projeto.id}`}>Prioridade</label>
+                    </dt>
+                    <dd>
+                      <PrioridadeSelect
+                        id={`prioridade-${projeto.id}`}
+                        prioridade={projeto.prioridade}
+                        nomeProjeto={projeto.nome}
+                        onChange={(novaPrioridade) =>
+                          onAlterarPrioridade(projeto.id, novaPrioridade)
+                        }
                       />
-                      <button type="submit" className="btn-salvar-preco">
-                        Salvar
-                      </button>
-                      <button
-                        type="button"
-                        className="btn-cancelar-preco"
-                        onClick={() => setEditandoPrecoId(null)}
-                      >
-                        Cancelar
-                      </button>
-                    </form>
-                  ) : (
-                    <p className="texto-preco-card">
-                      <strong>Preço:</strong>{' '}
-                      <span className="valor-preco-destaque">{projeto.preco}</span>
-                      <button
-                        type="button"
-                        className="btn-editar-inline"
-                        onClick={() => iniciarEdicaoPreco(projeto)}
-                      >
-                        Editar preço
-                      </button>
-                    </p>
-                  )}
-                </div>
+                    </dd>
+                  </div>
+
+                  <div className="meta-item-projeto meta-item-largo">
+                    <dt>
+                      <Banknote size={13} aria-hidden="true" />
+                      <span>Preço</span>
+                    </dt>
+                    <dd>
+                      {editandoEstePreco ? (
+                        <form
+                          className="form-editar-preco"
+                          onSubmit={(e) => salvarEdicaoPreco(e, projeto.id)}
+                        >
+                          <label
+                            htmlFor={`input-preco-${projeto.id}`}
+                            className="sr-only"
+                          >
+                            Novo preço do projeto {projeto.nome}
+                          </label>
+                          <input
+                            id={`input-preco-${projeto.id}`}
+                            name="preco"
+                            type="text"
+                            inputMode="decimal"
+                            value={valorPrecoEdicao}
+                            onChange={(e) => setValorPrecoEdicao(e.target.value)}
+                            autoFocus
+                          />
+                          <button type="submit" className="btn-salvar-preco">
+                            Salvar
+                          </button>
+                          <button
+                            type="button"
+                            className="btn-cancelar-preco"
+                            onClick={() => setEditandoPrecoId(null)}
+                          >
+                            Cancelar
+                          </button>
+                        </form>
+                      ) : (
+                        <span className="texto-preco-card">
+                          <span className="valor-preco-destaque">
+                            {projeto.preco}
+                          </span>
+                          <button
+                            type="button"
+                            className="btn-editar-inline"
+                            title="Editar preço"
+                            aria-label={`Editar preço de ${projeto.nome}`}
+                            onClick={() => iniciarEdicaoPreco(projeto)}
+                          >
+                            <Pencil size={13} aria-hidden="true" />
+                          </button>
+                        </span>
+                      )}
+                    </dd>
+                  </div>
+                </dl>
 
                 {projeto.membrosAlocados?.length > 0 && (
-                  <div className="projetos-membro">
-                    <span className="label-projetos-membro">Equipe:</span>
-                    <div className="lista-projetos-membro">
+                  <div className="equipe-projeto">
+                    <span className="label-projetos-membro">Equipe</span>
+                    <div className="pilha-avatares">
                       {projeto.membrosAlocados.map((nomeMembro) => (
-                        <span key={nomeMembro} className="tag-projeto-membro">
-                          {nomeMembro}
+                        <span
+                          key={nomeMembro}
+                          className="avatar-pilha"
+                          role="img"
+                          title={nomeMembro}
+                          aria-label={nomeMembro}
+                        >
+                          {obterIniciais(nomeMembro)}
                         </span>
                       ))}
                     </div>

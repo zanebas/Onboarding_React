@@ -1,17 +1,13 @@
 import { useState } from 'react';
+import { Calendar } from 'lucide-react';
 import {
   MEMBROS_EQUIPE,
+  estaAtrasado,
+  obterIniciais,
   ordenarProjetosPorPrioridade,
 } from '../data/mockProjects';
 import Badge from './Badge';
 import { PrioridadeBadge } from './PrioridadeSelect';
-
-function obterIniciais(nomeCompleto) {
-  if (!nomeCompleto) return 'SZ';
-  const partes = nomeCompleto.trim().split(/\s+/);
-  if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
-  return `${partes[0][0]}${partes[partes.length - 1][0]}`.toUpperCase();
-}
 
 function Dashboard({
   projetos,
@@ -45,7 +41,9 @@ function Dashboard({
     };
   });
 
-  const projetosOrdenados = ordenarProjetosPorPrioridade(projetos);
+  const projetosOrdenados = ordenarProjetosPorPrioridade(projetos).filter(
+    (p) => p.status !== 'Entregue'
+  );
 
   const projetosAtivos = projetos.filter((p) => p.status !== 'Entregue').length;
   const projetosConcluidos = projetos.filter((p) => p.status === 'Entregue').length;
@@ -92,7 +90,6 @@ function Dashboard({
     <div className="pagina">
       <div className="cabecalho-pagina">
         <h1>Dashboard Geral</h1>
-        <p>Acompanhe o status das entregas, demandas pendentes e o ritmo da equipe em tempo real.</p>
       </div>
 
       {/* 3 Cards do Topo */}
@@ -135,22 +132,57 @@ function Dashboard({
             </div>
 
             <div className="lista-simples">
-              {projetosOrdenados.map((projeto) => (
-                <div key={projeto.id} className="item-lista">
-                  <div>
-                    <p className="item-titulo">{projeto.nome}</p>
-                    <p className="item-subtitulo">
-                      {projeto.gerente} • Entrega: {projeto.dataEntrega} • {projeto.preco}
-                    </p>
-                  </div>
+              {projetosOrdenados.length === 0 && (
+                <p className="sem-comentarios">
+                  Nenhuma entrega em andamento.
+                </p>
+              )}
+              {projetosOrdenados.map((projeto) => {
+                const atrasado = estaAtrasado(projeto);
+                const progressoAtual = projeto.progresso ?? 0;
 
-                  <div className="item-direita">
-                    <PrioridadeBadge prioridade={projeto.prioridade} />
-                    <span className="porcentagem">{projeto.progresso ?? 0}%</span>
-                    <Badge status={projeto.status} />
+                return (
+                  <div key={projeto.id} className="item-lista">
+                    <div className="item-lista-topo">
+                      <div className="item-lista-info">
+                        <p className="item-titulo">{projeto.nome}</p>
+                        <p className="item-subtitulo">
+                          {projeto.gerente} •{' '}
+                          <span
+                            className={
+                              atrasado
+                                ? 'data-entrega data-atrasada'
+                                : 'data-entrega'
+                            }
+                          >
+                            <Calendar size={12} aria-hidden="true" />
+                            {projeto.dataEntrega}
+                            {atrasado && (
+                              <span className="indicador-atraso">Atrasado</span>
+                            )}
+                          </span>{' '}
+                          • <span className="valor-monetario">{projeto.preco}</span>
+                        </p>
+                      </div>
+
+                      <div className="item-direita">
+                        <PrioridadeBadge prioridade={projeto.prioridade} />
+                        <Badge status={projeto.status} />
+                      </div>
+                    </div>
+
+                    <div className="item-progresso">
+                      <progress
+                        className="barra-progresso-fina"
+                        value={progressoAtual}
+                        max={100}
+                        aria-label={`Progresso de ${projeto.nome}`}
+                      />
+                      <span className="porcentagem">{progressoAtual}%</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 

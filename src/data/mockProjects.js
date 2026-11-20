@@ -23,6 +23,23 @@ function dataParaTimestamp(dataBr) {
   return new Date(ano, mes - 1, dia).getTime();
 }
 
+export function estaAtrasado(projeto, hoje = new Date()) {
+  if (projeto.status === 'Entregue') return false;
+  const inicioDoDia = new Date(
+    hoje.getFullYear(),
+    hoje.getMonth(),
+    hoje.getDate()
+  ).getTime();
+  return dataParaTimestamp(projeto.dataEntrega) < inicioDoDia;
+}
+
+export function obterIniciais(nomeCompleto) {
+  if (!nomeCompleto) return 'SZ';
+  const partes = nomeCompleto.trim().split(/\s+/);
+  if (partes.length === 1) return partes[0].slice(0, 2).toUpperCase();
+  return `${partes[0][0]}${partes[partes.length - 1][0]}`.toUpperCase();
+}
+
 export function ordenarProjetosPorPrioridade(projetos) {
   return [...projetos].sort((a, b) => {
     const aEntregue = a.status === 'Entregue';

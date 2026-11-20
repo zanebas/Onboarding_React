@@ -75,6 +75,21 @@ function App() {
     setProjetos((atuais) => [...atuais, novoProjeto]);
   }
 
+  function editarProjeto(projetoId, dados) {
+    setProjetos((atuais) =>
+      atuais.map((projeto) => {
+        if (projeto.id !== projetoId) return projeto;
+        const novoProgresso = calcularProgresso(dados.tarefas);
+        return {
+          ...projeto,
+          ...dados,
+          progresso: novoProgresso,
+          status: novoProgresso === 100 ? 'Entregue' : 'Em andamento',
+        };
+      })
+    );
+  }
+
   function atualizarPrecoProjeto(projetoId, novoPreco) {
     const precoFormatado = formatarPreco(novoPreco);
     setProjetos((atuais) =>
@@ -280,6 +295,7 @@ function App() {
             projetos={projetos}
             onSelecionarProjeto={(projeto) => setProjetoSelecionadoId(projeto.id)}
             onAdicionarProjeto={adicionarProjeto}
+            onEditarProjeto={editarProjeto}
             onAtualizarPreco={atualizarPrecoProjeto}
             onAlternarEntrega={alternarStatusEntregaProjeto}
             onAlterarPrioridade={alterarPrioridadeProjeto}
