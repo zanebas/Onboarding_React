@@ -2,7 +2,7 @@
 
 Aplicação web (SPA) desenvolvida em **React** e **Vite** como entrega do processo de onboarding do Núcleo de Projetos da **CP2eJr**. O sistema centraliza o acompanhamento operacional de projetos internos, alocação da equipe, controle dinâmico de entregas e comunicação rápida entre os membros.
 
-🔗 **Acesse a aplicação online:** [https://zanebas.github.io/Onboarding_React/](https://zanebas.github.io/Onboarding_React/)
+ **Acesse a aplicação online:** [https://zanebas.github.io/Onboarding_React/](https://zanebas.github.io/Onboarding_React/)
 
 ---
 
@@ -27,10 +27,10 @@ Aplicação web (SPA) desenvolvida em **React** e **Vite** como entrega do proce
 
 ## Tecnologias Utilizadas
 
-* **React** (Hooks: `useState`, `useRef`)
-* **Vite** (Bundler e ambiente de desenvolvimento)
-* **JavaScript (ES6+)**
-* **CSS3** (Dark Mode neutro e layout responsivo)
+* **React**
+* **Vite**
+* **JavaScript**
+* **CSS3** 
 
 ---
 
@@ -39,7 +39,7 @@ Aplicação web (SPA) desenvolvida em **React** e **Vite** como entrega do proce
 Para executar o projeto na sua máquina, siga os passos abaixo no terminal:
 
 1. **Clone o repositório e acesse a pasta do projeto:**
-   git clone https://github.com/zanebas/Onboarding_React.git && cd Onboarding_React
+   git clone https://github.com/zanebas/Onboarding_React
 
 2. **Instale as dependências:**
    npm install
