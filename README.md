@@ -1,17 +1,48 @@
-# React + Vite
+# Projetos Internos — CP2eJr (Onboarding React)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação web (SPA) desenvolvida em **React** e **Vite** como entrega do processo de onboarding do Núcleo de Projetos da **CP2eJr**. O sistema centraliza o acompanhamento operacional de projetos internos, alocação da equipe, controle dinâmico de entregas e comunicação rápida entre os membros.
 
-Currently, two official plugins are available:
+🔗 **Acesse a aplicação online:** [https://zanebas.github.io/Onboarding_React/](https://zanebas.github.io/Onboarding_React/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Funcionalidades Principais
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Dashboard Geral:**
+  * Indicadores consolidados em tempo real (projetos ativos, tarefas pendentes, projetos concluídos e total de membros da equipe).
+  * Lista rápida de entregas em andamento com barra de progresso e status visual.
+  * Painel de **Equipe Alocada** que cruza automaticamente gerentes e membros alocados para exibir a carga de entregas ativas de cada integrante.
+* **Feed de Atividades Interno:**
+  * Publicação de atualizações rápidas (com envio direto pela tecla `Enter`).
+  * Interação em tempo real com curtidas e sistema de comentários aninhados por publicação.
+* **Gestão de Projetos:**
+  * Listagem completa em cards com acompanhamento de cliente, gerente responsável, prazo de entrega, orçamento e barra de progresso.
+  * Cadastro de novos projetos com validação de campos, seleção múltipla de membros da equipe e definição dinâmica de funcionalidades/tarefas.
+  * Edição rápida de valores (preço do projeto) diretamente no card ou na tela de detalhes.
+* **Controle Dinâmico de Entregas e Tarefas:**
+  * Checklist interativo de tarefas dentro de cada projeto: o progresso percentual é recalculado automaticamente a cada tarefa concluída ou reaberta.
+  * Alternância de status em um clique (*Em andamento* ↔ *Entregue 100%*), sincronizando automaticamente o estado de todas as tarefas vinculadas.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
-# Onboarding_React
+## Tecnologias Utilizadas
+
+* **React** (Hooks: `useState`, `useRef`)
+* **Vite** (Bundler e ambiente de desenvolvimento)
+* **JavaScript (ES6+)**
+* **CSS3** (Dark Mode neutro e layout responsivo)
+
+---
+
+## Como Rodar Localmente
+
+Para executar o projeto na sua máquina, siga os passos abaixo no terminal:
+
+1. **Clone o repositório e acesse a pasta do projeto:**
+   git clone https://github.com/zanebas/Onboarding_React.git && cd Onboarding_React
+
+2. **Instale as dependências:**
+   npm install
+
+3. **Inicie o servidor de desenvolvimento:**
+   npm run dev
