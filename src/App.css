@@ -226,12 +226,10 @@ body {
 
 .badge-prioridade,
 .select-prioridade {
-  --prioridade-cor: #71717a;
-  --prioridade-fundo: rgba(113, 113, 122, 0.14);
-  --prioridade-borda: rgba(113, 113, 122, 0.4);
-  background-color: var(--prioridade-fundo);
+  --prioridade-cor: #a1a1aa;
+  background-color: var(--cor-elemento);
   color: var(--prioridade-cor);
-  border: 1px solid var(--prioridade-borda);
+  border: 1px solid var(--cor-borda-forte);
   border-radius: 12px;
   font-size: 12px;
   font-weight: bold;
@@ -239,8 +237,21 @@ body {
 }
 
 .badge-prioridade {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
   padding: 4px 10px;
   white-space: nowrap;
+}
+
+.badge-prioridade::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  flex-shrink: 0;
 }
 
 .select-prioridade {
@@ -257,21 +268,15 @@ body {
 }
 
 .prioridade-alta {
-  --prioridade-cor: #ef4444;
-  --prioridade-fundo: rgba(239, 68, 68, 0.14);
-  --prioridade-borda: rgba(239, 68, 68, 0.4);
+  --prioridade-cor: #f87171;
 }
 
 .prioridade-media {
-  --prioridade-cor: #f59e0b;
-  --prioridade-fundo: rgba(245, 158, 11, 0.14);
-  --prioridade-borda: rgba(245, 158, 11, 0.4);
+  --prioridade-cor: #fbbf24;
 }
 
 .prioridade-baixa {
-  --prioridade-cor: #71717a;
-  --prioridade-fundo: rgba(113, 113, 122, 0.14);
-  --prioridade-borda: rgba(113, 113, 122, 0.4);
+  --prioridade-cor: #a1a1aa;
 }
 
 .linha-prioridade-projeto {
@@ -1216,23 +1221,23 @@ dialog::backdrop {
 }
 
 .botao-entrega-status {
-  padding: 10px 14px;
+  padding: 10px;
   border-radius: 6px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 13px;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .botao-entrega-status.entregar {
-  background-color: var(--cor-sucesso-fundo);
-  color: var(--cor-badge-verde);
-  border: 1px solid var(--cor-sucesso-borda);
+  background-color: var(--cor-elemento);
+  color: var(--cor-dot-verde);
+  border: 1px solid var(--cor-borda-forte);
 }
 
 .botao-entrega-status.entregar:hover {
-  background-color: var(--cor-dot-verde);
-  color: var(--cor-texto-destaque);
+  background-color: var(--cor-elemento-hover);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #34d399;
 }
 
 .botao-entrega-status.em-andamento {
